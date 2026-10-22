@@ -1,0 +1,11 @@
+'use client';
+import {useState} from 'react';
+import {communityCatalog,communityMapUrl} from '../../lib/communityCatalog.mjs';
+type Community={id:string;name:string;city:string;cityName?:string;area?:string;address?:string;currency:string};
+export default function CommunityPicker({communities=communityCatalog,launch=false,country='India'}:{communities?:Community[];launch?:boolean;country?:string}){
+ const items=communities.filter(c=>!launch||(country==='India'?c.currency==='INR':c.currency==='AED'));
+ const cityOf=(c:Community)=>c.cityName||c.city.split(',')[0];
+ const cities=Array.from(new Set(items.map(cityOf)));
+ const [city,setCity]=useState(''),[id,setId]=useState('');const selected=items.find(c=>c.id===id),other=city==='other';
+ return <div className="j-community-picker"><label className="field">City<select required value={city} onChange={e=>{setCity(e.target.value);setId('');}}><option value="">Choose your city</option>{cities.map(c=><option key={c}>{c}</option>)}{launch&&<option value="other">Another city / community</option>}</select></label>{other?<><label className="field">Your city<input name="city" required minLength={2} maxLength={100}/></label><label className="field">Society / community name<input name="organisation" required minLength={2} maxLength={160}/></label></>:<><label className="field">Your community<select name={launch?undefined:'communityId'} required value={id} disabled={!city} onChange={e=>setId(e.target.value)}><option value="">Choose your community</option>{items.filter(c=>cityOf(c)===city).map(c=><option key={c.id} value={c.id}>{c.name}{c.area?' · '+c.area:''}</option>)}</select></label>{launch&&<><input type="hidden" name="city" value={city}/><input type="hidden" name="organisation" value={selected?.name||''}/></>}{selected&&<div className="j-community-location"><strong>{selected.name}</strong><p>{selected.address||selected.city}</p><a href={communityMapUrl(selected)} target="_blank" rel="noopener noreferrer">Find on Google Maps ↗</a></div>}</>}{launch&&<p className="j-community-help">Register your interest for this community. Service availability depends on business and community onboarding. Can’t find yours? Choose “Another city / community”.</p>}</div>
+}
