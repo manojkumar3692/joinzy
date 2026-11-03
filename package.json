@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --hostname 127.0.0.1",
+    "dev": "JOINZY_WEEKLY_WORKER=1 next dev --hostname 127.0.0.1 --port 3012",
     "build": "next build",
-    "start": "next start --hostname 127.0.0.1",
+    "start": "JOINZY_WEEKLY_WORKER=1 next start --hostname 127.0.0.1 --port 3012",
     "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {

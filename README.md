@@ -1,20 +1,26 @@
-# Together — Community Group-Buying MVP
+# JOINZY
 
-A Next.js 15 / React 19 demo with Resident, Business and Admin portals. Includes an implementation PRD, Supabase/PostgreSQL schema with RLS and transactional RPCs, and two seeded communities.
-
-## Run locally
-Requires Node.js 20.9+ (Node 24 recommended).
+## Current app: run locally
+Run commands from `/Users/manoj/Documents/joinz`:
 
 ```sh
 npm install
 npm run dev
 ```
 
-Open http://localhost:3000. The demo server binds to loopback. Use `npm run build && npm start` for a production build of the **demo**, not a production payment service.
+Open **http://localhost:3012**. Both `npm run dev` and `npm start` use port 3012 explicitly; if occupied, stop that server first. They will not silently pick another port. For a different port use `npm run dev -- --port 3000` (or the equivalent start command). Node.js 20.9+ is required.
 
-In the Codex environment, Node 24 is available at:
-`/Users/manoj/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node`.
-Place that directory first in PATH if the system Node is older.
+Customers use the homepage's **Log in** / **Sign up** links, which open `/app` on the same hostname and port. The resident subdomain remains compatible. Business and admin portals remain at `business.localhost:3012/app` and `admin.localhost:3012/app`. Customer **Log out** is available in the navigation and Account page.
+
+This is the canonical project. The former `Documents/ChatGPT/JOINZY` path points here as a compatibility symlink. Run and deploy this folder; port 3012 is the default.
+
+### Deployment boundary
+Customer navigation uses relative URLs, so it stays on the deployed domain without a localhost redirect. Build with `npm run build`; a persistent Node server can run `npm start -- --port 3012`. Configure `PORTAL_ROOT_DOMAIN` for staff subdomains when self-hosting. Staff routes remain disabled on Vercel/Netlify pending proper admin authentication.
+
+Routing is ready for a deployed domain, but the application still stores accounts and bookings in `.demo/state.json`; it is not ready for public serverless use. A shared production database, authenticated admin access, payment/refund integration and a durable recurring-job runner remain launch requirements. No real payment is collected.
+
+## Historical implementation notes
+The older walkthrough below describes earlier fixtures and is retained as implementation history; use the current entry points above.
 
 ## Walkthrough
 1. Resident → Wasl Village → join the home cleaning offer for one unit. It crosses the eight-unit minimum. Inspect My bookings and its deposit/balance.
