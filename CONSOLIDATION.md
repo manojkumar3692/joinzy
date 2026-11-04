@@ -8,4 +8,4 @@ Latest source copied from the updated project. Original repository was clean bef
 
 Added original records by collection: ['deals', 'audit', 'audit', 'audit', 'businesses', 'packages', 'packages', 'allocations', 'businessAccounts'].
 
-The former project path is now a symlink to this folder.
+The former project path now contains a pointer document to this folder (the compatibility symlink was removed because it prevented tool sandbox startup).

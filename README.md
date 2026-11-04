@@ -12,7 +12,7 @@ Open **http://localhost:3012**. Both `npm run dev` and `npm start` use port 3012
 
 Customers use the homepage's **Log in** / **Sign up** links, which open `/app` on the same hostname and port. The resident subdomain remains compatible. Business and admin portals remain at `business.localhost:3012/app` and `admin.localhost:3012/app`. Customer **Log out** is available in the navigation and Account page.
 
-This is the canonical project. The former `Documents/ChatGPT/JOINZY` path points here as a compatibility symlink. Run and deploy this folder; port 3012 is the default.
+This is the canonical project. The former `Documents/ChatGPT/JOINZY` folder contains a pointer document to this project. Run and deploy this folder; port 3012 is the default.
 
 ### Deployment boundary
 Customer navigation uses relative URLs, so it stays on the deployed domain without a localhost redirect. Build with `npm run build`; a persistent Node server can run `npm start -- --port 3012`. Configure `PORTAL_ROOT_DOMAIN` for staff subdomains when self-hosting. Staff routes remain disabled on Vercel/Netlify pending proper admin authentication.

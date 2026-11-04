@@ -8,7 +8,8 @@ export async function POST(req:Request){
   if(input.website)return NextResponse.json({ok:true});
   const data=normalizeLaunchInterest(input);
   const url=process.env.SUPABASE_URL,key=process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if(url&&key){const response=await fetch(url.replace(/\/$/,'')+'/rest/v1/launch_waitlist?on_conflict=email,audience,country',{method:'POST',headers:{apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json',Prefer:'resolution=ignore-duplicates,return=minimal'},body:JSON.stringify(data),signal:AbortSignal.timeout(10000)});if(!response.ok)throw new Error('storage');}
+  if(process.env.JOINZY_DATA_BACKEND==='supabase'){const {transact}=await import('../../../lib/store.mjs');await transact({type:'joinLaunchWaitlist',role:'resident',input:data});}
+  else if(url&&key){const response=await fetch(url.replace(/\/$/,'')+'/rest/v1/launch_waitlist?on_conflict=email,audience,country',{method:'POST',headers:{apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json',Prefer:'resolution=ignore-duplicates,return=minimal'},body:JSON.stringify(data),signal:AbortSignal.timeout(10000)});if(!response.ok)throw new Error('storage');}
   else if(process.env.VERCEL||process.env.NETLIFY)return NextResponse.json({error:'The waitlist is temporarily unavailable. Please try again soon.'},{status:503});
   else{const {transact}=await import('../../../lib/store.mjs');await transact({type:'joinLaunchWaitlist',role:'resident',input:data});}
   return NextResponse.json({ok:true});
